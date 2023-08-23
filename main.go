@@ -2,10 +2,10 @@ package main
 
 import (
 	"log"
+	"net/http"
 
 	"github.com/dark-0ne/Chat-Application-Go-PostgreSQL-React/models"
-	"github.com/dark-0ne/Chat-Application-Go-PostgreSQL-React/services"
-	"github.com/gin-gonic/gin"
+	"github.com/dark-0ne/Chat-Application-Go-PostgreSQL-React/routers"
 )
 
 func main() {
@@ -16,13 +16,17 @@ func main() {
 	}
 	db.DB()
 
-	router := gin.Default()
+	routersInit := routers.InitRouter()
 
-	router.GET("/users", services.GetUsers)
-	router.GET("/user/:id", services.GetUser)
-	router.POST("/user", services.PostUser)
-	router.PUT("/user/:id", services.UpdateUser)
-	router.DELETE("/user/:id", services.DeleteUser)
+	maxHeaderBytes := 1 << 20
 
-	log.Fatal(router.Run(":3000"))
+	server := &http.Server{
+		Addr:           ":3000",
+		Handler:        routersInit,
+		MaxHeaderBytes: maxHeaderBytes,
+	}
+
+	log.Printf("[info] start http server listening on localhost:3000")
+
+	server.ListenAndServe()
 }

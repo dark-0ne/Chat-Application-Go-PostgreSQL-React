@@ -10,12 +10,14 @@ import (
 
 type NewUser struct {
 	Username string `json:"username" binding:"required"`
-	Bio      string `json:"bio" binding:"required"`
+	Bio      string `json:"bio"`
+	Password string `json:"password" binding:"required"`
 }
 
 type UserUpdate struct {
 	Username string `json:"username"`
 	Bio      string `json:"bio"`
+	Password string `json:"password"`
 }
 
 func GetUsers(c *gin.Context) {
@@ -62,7 +64,7 @@ func PostUser(c *gin.Context) {
 		return
 	}
 
-	newUser := models.User{Username: user.Username, Bio: user.Bio}
+	newUser := models.User{Username: user.Username, Bio: user.Bio, Password: user.Password}
 
 	db, err := models.Database()
 	if err != nil {
@@ -98,7 +100,7 @@ func UpdateUser(c *gin.Context) {
 		return
 	}
 
-	if err := db.Model(&user).Updates(models.User{Username: updateUser.Username, Bio: updateUser.Bio}).Error; err != nil {
+	if err := db.Model(&user).Updates(models.User{Username: updateUser.Username, Bio: updateUser.Bio, Password: updateUser.Password}).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
