@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"github.com/dark-0ne/Chat-Application-Go-PostgreSQL-React/middlewares"
-	"github.com/dark-0ne/Chat-Application-Go-PostgreSQL-React/services"
+	"github.com/dark-0ne/Chat-Application-Go-PostgreSQL-React/routers/api/v1"
 )
 
 func InitRouter() *gin.Engine {
@@ -29,12 +29,16 @@ func InitRouter() *gin.Engine {
 	apiv1.GET("/refresh_token", authMiddleware.RefreshHandler)
 	apiv1.Use(authMiddleware.MiddlewareFunc())
 	{
+		apiv1.GET("/users", v1.GetUsers)
+		apiv1.GET("/user/:id", v1.GetUser)
+		apiv1.POST("/user", v1.PostUser)
+		apiv1.PATCH("/user/:id", v1.UpdateUser)
+		apiv1.DELETE("/user/:id", v1.DeleteUser)
 
-		apiv1.GET("/users", services.GetUsers)
-		apiv1.GET("/user/:id", services.GetUser)
-		apiv1.POST("/user", services.PostUser)
-		apiv1.PATCH("/user/:id", services.UpdateUser)
-		apiv1.DELETE("/user/:id", services.DeleteUser)
+		apiv1.GET("/message/:id", v1.GetMessage)
+		apiv1.POST("/message", v1.PostMessage)
+		apiv1.PATCH("/message/:id", v1.UpdateMessage)
+		apiv1.DELETE("/message/:id", v1.DeleteMessage)
 	}
 
 	return r
