@@ -22,7 +22,7 @@ type UserUpdate struct {
 	Conversations []models.Conversation `json:"conversations"`
 }
 
-func GetUsers(c *gin.Context) {
+func GetAllUsers(c *gin.Context) {
 
 	var users []models.User
 
@@ -48,7 +48,7 @@ func GetUser(c *gin.Context) {
 		log.Println(err)
 	}
 
-	if err := db.Where("id= ?", c.Param("id")).First(&user).Error; err != nil {
+	if err := db.Where("id= ?", c.Param("uid")).First(&user).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
 	}
@@ -90,7 +90,7 @@ func UpdateUser(c *gin.Context) {
 		log.Println(err)
 	}
 
-	if err := db.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+	if err := db.Where("id = ?", c.Param("uid")).First(&user).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found!"})
 		return
 	}
@@ -119,12 +119,12 @@ func DeleteUser(c *gin.Context) {
 		log.Println(err)
 	}
 
-	if err := db.Where("id = ?", c.Param("id")).First(&user).Error; err != nil {
+	if err := db.Where("id = ?", c.Param("uid")).First(&user).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found!"})
 		return
 	}
 
-	if err := db.Delete(&user).Error; err != nil {
+	if err := db.Unscoped().Delete(&user).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

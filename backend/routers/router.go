@@ -29,16 +29,22 @@ func InitRouter() *gin.Engine {
 	apiv1.GET("/refresh_token", authMiddleware.RefreshHandler)
 	apiv1.Use(authMiddleware.MiddlewareFunc())
 	{
-		apiv1.GET("/users", v1.GetUsers)
-		apiv1.GET("/user/:id", v1.GetUser)
+		apiv1.GET("/users", v1.GetAllUsers)
+		apiv1.GET("/user/:uid", v1.GetUser)
 		apiv1.POST("/user", v1.PostUser)
-		apiv1.PATCH("/user/:id", v1.UpdateUser)
-		apiv1.DELETE("/user/:id", v1.DeleteUser)
+		apiv1.PATCH("/user/:uid", v1.UpdateUser)
+		apiv1.DELETE("/user/:uid", v1.DeleteUser)
 
-		apiv1.GET("/message/:id", v1.GetMessage)
-		apiv1.POST("/message", v1.PostMessage)
-		apiv1.PATCH("/message/:id", v1.UpdateMessage)
-		apiv1.DELETE("/message/:id", v1.DeleteMessage)
+		apiv1.GET("/conversation/:conv_id", v1.GetConversation)
+		apiv1.POST("/conversation", v1.PostConversation)
+		apiv1.PATCH("/conversation/:conv_id", v1.UpdateConversation)
+		apiv1.DELETE("/conversation/:conv_id", v1.DeleteConversation)
+
+		apiv1.GET("/conversation/:conv_id/messages", v1.GetAllMessages)
+		apiv1.GET("/conversation/:conv_id/message/:msg_id", v1.GetMessage)
+		apiv1.POST("/conversation/:conv_id/message", v1.PostMessage)
+		apiv1.PATCH("/conversation/:conv_id/message/:msg_id", v1.UpdateMessage)
+		apiv1.DELETE("/conversation/:conv_id/message/:id", v1.DeleteMessage)
 	}
 
 	return r
