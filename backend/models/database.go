@@ -20,6 +20,14 @@ func Database() (*gorm.DB, error) {
 		log.Println(err)
 	}
 
+	if err = db.AutoMigrate(&Conversation{}); err != nil {
+		log.Println(err)
+	}
+
+	if err = db.AutoMigrate(&Message{}); err != nil {
+		log.Println(err)
+	}
+
 	return db, err
 
 }

@@ -25,7 +25,7 @@ func GetConversation(c *gin.Context) {
 		log.Println(err)
 	}
 
-	if err := db.Where("id= ?", c.Param("conv_id")).First(&conversation).Error; err != nil {
+	if err := db.Where("id= ?", c.Param("conv_id")).Preload("Messages").First(&conversation).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Conversation not found"})
 		return
 	}

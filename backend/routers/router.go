@@ -44,7 +44,7 @@ func InitRouter() *gin.Engine {
 		apiv1.GET("/conversation/:conv_id/message/:msg_id", v1.GetMessage)
 		apiv1.POST("/conversation/:conv_id/message", v1.PostMessage)
 		apiv1.PATCH("/conversation/:conv_id/message/:msg_id", v1.UpdateMessage)
-		apiv1.DELETE("/conversation/:conv_id/message/:id", v1.DeleteMessage)
+		apiv1.DELETE("/conversation/:conv_id/message/:msg_id", v1.DeleteMessage)
 	}
 
 	return r
